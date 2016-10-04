@@ -1,0 +1,44 @@
+{
+    "name":                 "indenter",
+    "version":              "9.9.9",
+    "description":
+
+      "Convert a JSON stream into pretty printed log lines.",
+
+    "keywords":
+    [
+                            "json", "serialization", "logging"
+    ],
+    "author":               "Alan Gutierrez <alan@prettyrobots.com>",
+    "homepage":             "https://bigeasy.github.io/indenter",
+    "bugs":                 "https://github.com/bigeasy/indenter/issues",
+    "license":              "MIT",
+    "repository":
+    {
+                            "type": "git",
+                            "url": "http://github.com/bigeasy/indenter.git"
+    },
+    "dependencies":
+    {
+                            "arguable":                     "4.3.x",
+                            "byline":                       "5.0.0",
+                            "cadence":                      "1.0.x",
+                            "delta":                        "1.1.x",
+                            "sprintf":                      "0.1.x",
+                            "staccato":                     "1.1.x",
+                            "wafer":                        "4.0.x"
+    },
+    "devDependencies":
+    {
+                            "proof":                        "1.2.x"
+    },
+    "main":                 "indenter.bin",
+    "bin":
+    {
+                            "indenter":                     "indenter.bin.js"
+    },
+    "scripts":
+    {
+                            "test": "proof platform win32 && proof test */*.t.* || t/test"
+    }
+}
