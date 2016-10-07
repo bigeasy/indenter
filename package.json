@@ -1,6 +1,6 @@
 {
     "name":                 "indenter",
-    "version":              "9.9.9",
+    "version":              "0.0.0",
     "description":
 
       "Convert a JSON stream into pretty printed log lines.",
