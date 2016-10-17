@@ -23,6 +23,7 @@
                             "arguable":                     "4.3.x",
                             "byline":                       "5.0.0",
                             "cadence":                      "1.0.x",
+                            "inquiry":                      "0.0.3",
                             "delta":                        "1.1.x",
                             "sprintf":                      "0.1.x",
                             "staccato":                     "1.1.x",
