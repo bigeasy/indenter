@@ -25,7 +25,13 @@ require('arguable')(module, require('cadence')(function (async, program) {
 
     var util = require('util')
     var parsed = require('./parser')(program.argv)
-    function comparator (operation, coercion) {
+    function createRegularExpression (comparator) {
+        comparator = new RegExp(comparator)
+        return function (value) {
+            return comparator.test(value)
+        }
+    }
+    function createComparison (operation, coercion) {
         return new Function ('comparator',
             'comparator = ' + coercion + 'comparator                        \n\
             return function (value) {                                       \n\
@@ -34,9 +40,10 @@ require('arguable')(module, require('cadence')(function (async, program) {
         )
     }
     function createCondition (when) {
-        console.log('when', when)
+        var compare = when.operation == '=~'
+                    ? createRegularExpression(when.comparator)
+                    : createComparison(when.operation, '')(when.comparator)
         var select = inquiry(when.selector)
-        var compare = comparator(when.operation, '')(when.comparator)
         return function (object) {
             return compare(select(object).shift() || null)
         }
