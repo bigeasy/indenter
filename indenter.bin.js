@@ -85,6 +85,7 @@ require('arguable')(module, require('cadence')(function (async, program) {
             return included
         }
     }
+    console.log('parsed',parsed)
     var emissions = parsed.map(function (emission) {
         var when, operation = {}, header = null, include = null, flattened = null
         if (emission.when == null) {

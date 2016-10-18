@@ -36,9 +36,10 @@ var parse = {
 }
 
 module.exports = function (argv) {
-    var ast = [], proto = {}, body, extractor, instance, name, field
+    var ast = [], proto = {}, body, extractor, instance, name, field, visited
     field = proto
     while (argv.length != 0) {
+        visited = true
         var keyword = argv.shift()
         switch (keyword) {
         case 'when':
@@ -89,6 +90,9 @@ module.exports = function (argv) {
                 })
             }
         }
+    }
+    if (visited && ast.length == 0) {
+        ast.push(proto)
     }
     return ast
 }
