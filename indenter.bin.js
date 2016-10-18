@@ -25,7 +25,6 @@ require('arguable')(module, require('cadence')(function (async, program) {
 
     var util = require('util')
     var parsed = require('./parser')(program.argv)
-    console.log(util.inspect(parsed, null, { depth: Infinity }))
     function comparator (operation, coercion) {
         return new Function (
             'comparator',
@@ -36,6 +35,7 @@ require('arguable')(module, require('cadence')(function (async, program) {
         )
     }
     function createCondition (when) {
+        console.log('when', when)
         var select = inquiry(when.selector)
         var compare = comparator(when.operation, '')(when.comparator)
         return function (object) {
@@ -55,7 +55,6 @@ require('arguable')(module, require('cadence')(function (async, program) {
         var selectors = header.selectors.map(function (selector) {
             switch (selector.type) {
             case 'selector':
-                console.log(selector)
                 select = inquiry(selector.selector)
                 return function (json) {
                     return select(json).shift() || null
@@ -85,7 +84,18 @@ require('arguable')(module, require('cadence')(function (async, program) {
             return included
         }
     }
-    console.log('parsed',parsed)
+    function createEvaluation (body) {
+        var evaluation = new Function('$', 'return ' + body)
+        return function (json) {
+            var evaluator = function (query) {
+                return inquiry(query)(json)
+            }
+            for (var key in json) {
+                evaluator[key] = json[key]
+            }
+            return evaluation(evaluator)
+        }
+    }
     var emissions = parsed.map(function (emission) {
         var when, operation = {}, header = null, include = null, flattened = null
         if (emission.when == null) {
@@ -93,6 +103,9 @@ require('arguable')(module, require('cadence')(function (async, program) {
         } else switch (emission.when.type) {
         case 'condition':
             when = createCondition(emission.when)
+            break
+        case 'evaluation':
+            when = createEvaluation(emission.when.body)
             break
         }
         if (emission.header) {

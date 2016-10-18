@@ -6,7 +6,7 @@ cat log.txt | indent
         header '%s>' 'qualified'
         include 'request=$request' 'response=$response'
     when 'qualified = paxos#name'
-        include '{ new Date($1).toISOString() }(when)'
+        include '{ new Date($.when).toISOString() }(when)'
 
 # TODO Rename `include` to `json`.
 cat log.txt | indent
@@ -15,5 +15,5 @@ cat log.txt | indent
         flattened 'request: request',
         include 'request: request' 'response: response'
     when 'qualified' <> 'paxos#name'
-        include 'when: { new Date($("when")).toISOString() }'
+        include 'when: { new Date($("when")[0]).toISOString() }'
     when '{ /paxos/.test($("name")) }'
