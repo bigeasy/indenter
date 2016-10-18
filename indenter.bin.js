@@ -115,7 +115,11 @@ require('arguable')(module, require('cadence')(function (async, program) {
             flattened = createInclude(emission.flattened)
         }
         if (emission.include) {
-            include = createInclude(emission.include)
+            if (emission.include == null) {
+                include = function () { return null }
+            } else {
+                include = createInclude(emission.include)
+            }
         } else {
             include = function (json) { return json }
         }

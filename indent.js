@@ -32,15 +32,17 @@ module.exports = cadence(function (async, emissions, input, output) {
             }
             formatted.push(newline)
             json = emissions[i].include(json)
-            var inspection = util
-                .inspect(json, null, { depth: Infinity })
-                .split('\n')
-                .map(function (line) {
-                    return '  ' + line
-                })
-                .join('\n')
-            formatted.push(inspection)
-            formatted.push('\n')
+            if (json != null) {
+                var inspection = util
+                    .inspect(json, null, { depth: Infinity })
+                    .split('\n')
+                    .map(function (line) {
+                        return '  ' + line
+                    })
+                    .join('\n')
+                formatted.push(inspection)
+                formatted.push('\n')
+            }
             output.write(formatted.join(''), async())
         })
     })()
