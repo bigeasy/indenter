@@ -40,7 +40,7 @@ require('arguable')(module, require('cadence')(function (async, program) {
         )
     }
     function createCondition (when) {
-        var compare = when.operation == '=~'
+        var compare = when.operation == '~'
                     ? createRegularExpression(when.comparator)
                     : createComparison(when.operation, '')(when.comparator)
         var select = inquiry(when.selector)
