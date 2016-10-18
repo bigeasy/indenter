@@ -26,12 +26,11 @@ require('arguable')(module, require('cadence')(function (async, program) {
     var util = require('util')
     var parsed = require('./parser')(program.argv)
     function comparator (operation, coercion) {
-        return new Function (
-            'comparator',
-                'comparator = ' + coercion + 'comparator\n' +
-                'return function (value) {\n' +
-                    'return ' + coercion + 'value ' + operation + ' comparator\n' +
-                '}\n'
+        return new Function ('comparator',
+            'comparator = ' + coercion + 'comparator                        \n\
+            return function (value) {                                       \n\
+                return ' + coercion + 'value ' + operation + ' comparator   \n\
+            }'
         )
     }
     function createCondition (when) {
