@@ -102,17 +102,28 @@ require('arguable')(module, require('cadence')(function (async, program) {
             return evaluation(evaluator)
         }
     }
+    function createAnd (when) {
+        var one = createWhen(when.one), two = createWhen(when.two)
+        return function (json) {
+            return one(json) && two(json)
+        }
+    }
+    function createWhen (when) {
+        switch (when.type) {
+        case 'condition':
+            return createCondition(when)
+        case 'evaluation':
+            return createEvaluation(when.body)
+        case 'and':
+            return createAnd(when)
+        }
+    }
     var emissions = parsed.map(function (emission) {
         var when, operation = {}, header = null, include = null, flattened = null
         if (emission.when == null) {
             when = function () { return true }
-        } else switch (emission.when.type) {
-        case 'condition':
-            when = createCondition(emission.when)
-            break
-        case 'evaluation':
-            when = createEvaluation(emission.when.body)
-            break
+        } else {
+            when = createWhen(emission.when)
         }
         if (emission.header) {
             header = createHeader(emission.header)

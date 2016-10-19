@@ -31,7 +31,7 @@ var parse = {
         return parse.evaluation(argv) || parse.selector(argv)
     },
     keyword: function (token) {
-        return /^when|header|flattened|include|exclude$/.test(token)
+        return /^when|and|header|flattened|include|exclude$/.test(token)
     }
 }
 
@@ -49,6 +49,13 @@ module.exports = function (argv) {
             }
             ast.push(field)
             field.when = parse.evaluation(argv) || parse.conditional(argv)
+            break
+        case 'and':
+            field.when = {
+                type: 'and',
+                one: field.when,
+                two:  parse.evaluation(argv) || parse.conditional(argv)
+            }
             break
         case 'header':
             field.header = {
