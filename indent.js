@@ -4,7 +4,7 @@ var util = require('util')
 var Wafer = require('wafer')
 
 module.exports = cadence(function (async, emissions, input, output) {
-    var loop = async(function () {
+    var lineNumber = 1, loop = async(function () {
         async(function () {
             input.read(async())
         }, function (line) {
@@ -12,6 +12,7 @@ module.exports = cadence(function (async, emissions, input, output) {
                 return [ loop.break ]
             }
             var json = JSON.parse(line.toString())
+            json.lineNumber = lineNumber++
             for (var i = 0, I = emissions.length; i < I; i++) {
                 if (emissions[i].when(json)) {
                     break

@@ -61,7 +61,7 @@ require('arguable')(module, require('cadence')(function (async, program) {
         var selectors = header.selectors.map(function (selector) {
             switch (selector.type) {
             case 'selector':
-                select = inquiry(selector.selector)
+                var select = inquiry(selector.selector)
                 return function (json) {
                     return select(json).shift() || null
                 }
@@ -71,7 +71,7 @@ require('arguable')(module, require('cadence')(function (async, program) {
             var vargs = selectors.map(function (selector) {
                 return selector(json)
             })
-            return sprintf(header.format, vargs)
+            return sprintf.apply(null, [ header.format ].concat(vargs))
         }
         return null
     }
